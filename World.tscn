@@ -1,21 +1,19 @@
 [gd_scene load_steps=4 format=2]
 
+[ext_resource path="res://rolling-hill.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Egg.tscn" type="PackedScene" id=2]
-[ext_resource path="res://untitled.fbx" type="PackedScene" id=3]
 [ext_resource path="res://levels/spiral.fbx" type="PackedScene" id=4]
 
 [node name="World" type="Spatial"]
 
-[node name="Wall" parent="." instance=ExtResource( 3 )]
-transform = Transform( 37.9822, 0, 0, 0, 37.9822, 0, 0, 0, 37.9822, 16.522, -38.6039, -21.1855 )
+[node name="spiral" parent="." instance=ExtResource( 4 )]
 visible = false
 
-[node name="spiral" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.06597, 4.2419, -0.0395852 )
-
 [node name="Egg" parent="." instance=ExtResource( 2 )]
-transform = Transform( -1.8384e-08, 1.8384e-08, 0.420577, -1.8384e-08, 0.420577, -1.8384e-08, -0.420577, -1.8384e-08, -1.8384e-08, -3.98865, 4.81362, 0 )
+transform = Transform( -4.37114e-08, 4.37114e-08, 1, -4.37114e-08, 1, -4.37114e-08, -1, -4.37114e-08, -4.37114e-08, -1.49057, 0.787236, 0.0191122 )
 
 [node name="Camera" type="Camera" parent="Egg"]
 transform = Transform( -9.45248e-08, 0.988463, -2.16248, 1.47139e-07, 2.16248, 0.988463, 2.37768, -9.45249e-08, -1.47139e-07, -6.7469, 3.37653, 3.20114 )
 current = true
+
+[node name="rolling-hill" parent="." instance=ExtResource( 1 )]
