@@ -24,7 +24,6 @@ func _process(delta):
 	
 	var collision = move_and_collide(velocity * delta)
 	if collision:
-		print("Hi")
 		#jumping = false
 		velocity = velocity.slide(collision.normal)
 
