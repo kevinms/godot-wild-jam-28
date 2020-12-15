@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Egg.gd" type="Script" id=1]
+[ext_resource path="res://Egg.tscn" type="PackedScene" id=2]
+[ext_resource path="res://untitled.fbx" type="PackedScene" id=3]
+
+[node name="World" type="Spatial"]
+
+[node name="Egg" parent="." instance=ExtResource( 2 )]
+transform = Transform( 0.642092, 3.35104e-08, 0.766628, -3.35104e-08, 1, -1.56447e-08, -0.766628, -1.56447e-08, 0.642092, -3.0413, 0.880158, -1.06019 )
+script = ExtResource( 1 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, -1.81719e-08, -3.95631e-09, 1.81719e-08, 0.90949, 0.415725, -3.95631e-09, -0.415725, 0.90949, 0, 1.76455, 5.45891 )
+
+[node name="Wall" parent="." instance=ExtResource( 3 )]
+transform = Transform( 37.9822, 0, 0, 0, 37.9822, 0, 0, 0, 37.9822, 16.522, -38.6039, -21.1855 )

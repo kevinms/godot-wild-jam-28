@@ -1,0 +1,95 @@
+[gd_scene load_steps=10 format=2]
+
+[sub_resource type="SphereMesh" id=1]
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_color = Color( 0.788235, 0.996078, 0.764706, 1 )
+
+[sub_resource type="SphereMesh" id=2]
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_color = Color( 0.360784, 0.176471, 0.0156863, 1 )
+
+[sub_resource type="SpatialMaterial" id=6]
+albedo_color = Color( 0.768627, 0.34902, 0.184314, 1 )
+
+[sub_resource type="SpatialMaterial" id=7]
+albedo_color = Color( 0.847059, 0.309804, 0.309804, 1 )
+
+[sub_resource type="CylinderMesh" id=3]
+
+[sub_resource type="SpatialMaterial" id=8]
+albedo_color = Color( 0.00392157, 0.00392157, 0.00392157, 1 )
+
+[sub_resource type="CapsuleShape" id=9]
+
+[node name="Egg" type="KinematicBody"]
+
+[node name="Body" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1.3248, 0, 0, 0, 1, 0, 0.00593752, 0 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 4 )
+
+[node name="Eye" type="MeshInstance" parent="."]
+transform = Transform( 0.12398, 0, 0, 0, 0.12398, 0, 0, 0, 0.12398, 0.411317, 0.968341, 0.598096 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 5 )
+
+[node name="Eye2" type="MeshInstance" parent="."]
+transform = Transform( 0.12398, 0, 0, 0, 0.12398, 0, 0, 0, 0.12398, -0.433854, 0.968341, 0.598096 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 5 )
+
+[node name="Nose" type="MeshInstance" parent="."]
+transform = Transform( 0.12398, 0, 0, 0, 0.197185, 0, 0, 0, 0.12398, 0.00281763, 0.648952, 0.819014 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 6 )
+
+[node name="Mouse" type="MeshInstance" parent="."]
+transform = Transform( 0.536443, 0, 0, 0, 0.12398, 0, 0, 0, 0.12398, -0.00845098, 0.293981, 0.890247 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 7 )
+
+[node name="Arm" type="MeshInstance" parent="."]
+transform = Transform( -1.89011e-08, 0.432406, 0, -0.0470647, -2.05727e-09, 0, 0, 0, 0.0470647, 1.36121, 0.280637, 0 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="Hand" type="MeshInstance" parent="Arm"]
+transform = Transform( -2.2843e-08, -2.63423, 0, 0.522586, -1.15146e-07, 0, 0, 0, 2.63423, 0.173247, 1.08693, 0.0777543 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 8 )
+
+[node name="Arm2" type="MeshInstance" parent="."]
+transform = Transform( 2.30156e-08, -0.432406, 0, 0.0470647, 3.98594e-08, 0, 0, 0, 0.0470647, -1.34334, 0.280637, 0 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="Hand" type="MeshInstance" parent="Arm2"]
+transform = Transform( -2.2843e-08, -2.63423, 0, 0.522586, -1.15146e-07, 0, 0, 0, 2.63423, 0.173247, 1.08693, 0.0777543 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 8 )
+
+[node name="Leg" type="MeshInstance" parent="."]
+transform = Transform( -0.0470647, -2.05726e-09, -2.05727e-09, -2.05727e-09, 1.89011e-08, 0.0470647, -1.89011e-08, 0.432406, -2.05727e-09, 0.412168, -1.13186, 0.581732 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="Foot" type="MeshInstance" parent="Leg"]
+transform = Transform( -8.69926e-15, -2.63423, 2.42825e-07, -2.2843e-08, -1.40212e-07, -0.286721, 4.80124, 2.83071e-14, -1.15146e-07, 0.173241, 1.07487, 1.51809 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 8 )
+
+[node name="Leg2" type="MeshInstance" parent="."]
+transform = Transform( -0.0470647, -2.05726e-09, -2.05727e-09, -2.05727e-09, 1.89011e-08, 0.0470647, -1.89011e-08, 0.432406, -2.05727e-09, -0.401296, -1.13186, 0.581732 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="Foot" type="MeshInstance" parent="Leg2"]
+transform = Transform( -8.69926e-15, -2.63423, 2.42825e-07, -2.2843e-08, -1.40212e-07, -0.286721, 4.80124, 2.83071e-14, -1.15146e-07, 0.173241, 1.07487, 1.51809 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 8 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 4.37114e-08, -4.37114e-08, -4.37114e-08, -4.37114e-08, -1, -4.37114e-08, 1, -4.37114e-08, 0, 0, 0 )
+shape = SubResource( 9 )
