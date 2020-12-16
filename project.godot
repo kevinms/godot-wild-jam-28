@@ -22,6 +22,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Util="*res://Util.gd"
+DebugDraw="*res://DebugDraw.gd"
 
 [rendering]
 

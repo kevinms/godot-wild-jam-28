@@ -16,16 +16,18 @@ func create_dot(pos, scale, color):
 	add_child(dot)
 
 func _ready():
-	curve = Util.CurveFromCsvFile("res://levels/rolling-hill.csv")
+	t = 0.0
+	curve = Util.CurveFromCsvFile("res://levels/loop.csv")
 	
 	for i in curve.get_point_count():
-		create_dot(curve.get_point_position(i), 0.4, Color(0,0,1))
-		create_dot(curve.get_point_in(i), 0.2, Color(1,0,0))
-		create_dot(curve.get_point_out(i), 0.2, Color(0,1,0))
+		create_dot(curve.get_point_position(i), 0.4, Color.white.linear_interpolate(Color(0,0,1), float(i) / curve.get_point_count()))
+		#create_dot(curve.get_point_in(i), 0.2, Color(1,0,0))
+		#create_dot(curve.get_point_out(i), 0.2, Color(0,1,0))
 
 func _process(delta):
-	t += delta * 0.1
-	t = min(t, 1.0)
+	t += (delta * 0.1)
 	
-	var position = curve.interpolate_baked(t * curve.get_baked_length(), true)
-	$Ball.global_transform.origin = position
+	var position = curve.interpolate_baked(t * curve.get_baked_length(), false)
+	$Egg.global_transform.origin = position
+	
+	print(t, " ", curve.get_baked_length(), " ", position)
