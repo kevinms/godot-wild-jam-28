@@ -29,5 +29,3 @@ func _process(delta):
 	
 	var position = curve.interpolate_baked(t * curve.get_baked_length(), false)
 	$Egg.global_transform.origin = position
-	
-	print(t, " ", curve.get_baked_length(), " ", position)

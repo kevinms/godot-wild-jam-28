@@ -25,3 +25,5 @@ mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
 
 [node name="loop" parent="." instance=ExtResource( 5 )]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

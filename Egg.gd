@@ -4,22 +4,55 @@ var speed = 3.0
 var gravity = 2.0
 var velocity: Vector3
 
+var spin_speed = 0.2
+var lean_speed = 2.0
+var fall_angle = PI/4
+
 var prev_pos: Vector3
+var lean_angle: float
+var spin_angle: float
 
 func _ready():
 	prev_pos = global_transform.origin
 
+func lean_dir() -> float:
+	if Input.is_action_pressed("ui_left"):
+		return 1.0
+	if Input.is_action_pressed("ui_right"):
+		return -1.0
+	return 0.0
+
 func _process(delta):
 	DebugDraw.reset($Debug)
 	
-	# Silly spin
-	$Body.rotate_y(0.1)
-	
 	# Orient the egg to be sitting on the wall and looking forward at all times
 	var target = global_transform.origin + (global_transform.origin - prev_pos).normalized()
+	if global_transform.origin == prev_pos:
+		target = global_transform.origin - global_transform.basis.z.normalized()
 	var surface_normal = get_floor_normal()
 	look_at(target, surface_normal)
 	prev_pos = global_transform.origin
+	
+	# Apply lean
+	var dir = lean_dir()
+	if dir != 0:
+		lean_angle += dir * lean_speed * delta
+	
+	$Body.rotation = Vector3.ZERO
+	$Body.rotate_object_local($Body.transform.basis.z, lean_angle)
+	
+	# Apply spin
+	var spin_threshold = fall_angle * 0.5
+	if abs(lean_angle) > spin_threshold:
+		var weight = (abs(lean_angle) - spin_threshold) /  (fall_angle - spin_threshold)
+		spin_angle += lerp(0.0, spin_speed, min(weight, 1.0))
+		$Body/DancePivot.rotation = Vector3.ZERO
+		$Body/DancePivot.rotate_object_local($Body/DancePivot.transform.basis.y, spin_angle)
+	else:
+		spin_angle = 0.0
+	
+	if abs(lean_angle) > fall_angle:
+		print("YOU LOSE")
 	
 	#velocity = Vector3.RIGHT * speed
 	#velocity += -surface_normal * gravity
