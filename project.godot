@@ -24,6 +24,12 @@ config/icon="res://icon.png"
 Util="*res://Util.gd"
 DebugDraw="*res://DebugDraw.gd"
 
+[importer_defaults]
+
+csv={
+
+}
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
