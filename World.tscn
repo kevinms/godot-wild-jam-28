@@ -1,8 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
+[ext_resource path="res://Music.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Egg.tscn" type="PackedScene" id=2]
 [ext_resource path="res://World.gd" type="Script" id=3]
+[ext_resource path="res://ui/balance_meter_bg.png" type="Texture" id=4]
 [ext_resource path="res://levels/loop.tscn" type="PackedScene" id=5]
+[ext_resource path="res://ui/balance_meter_fg.png" type="Texture" id=6]
 
 [sub_resource type="SphereMesh" id=1]
 
@@ -26,4 +29,21 @@ material/0 = SubResource( 2 )
 
 [node name="loop" parent="." instance=ExtResource( 5 )]
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="HUD" type="Position2D" parent="."]
+
+[node name="BalanceMeter" type="Node2D" parent="HUD"]
+
+[node name="TextureProgress" type="TextureProgress" parent="HUD/BalanceMeter"]
+margin_left = 408.0
+margin_top = 509.0
+margin_right = 448.0
+margin_bottom = 549.0
+rect_scale = Vector2( 3.40896, 3.40896 )
+value = 70.0
+texture_under = ExtResource( 4 )
+texture_progress = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Music" parent="." instance=ExtResource( 1 )]

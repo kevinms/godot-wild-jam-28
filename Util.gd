@@ -35,3 +35,5 @@ func CurveFromCsvFile(res) -> Curve3D:
 		i += 1
 
 	return curve
+
+var music_speed_scale: float = 1.0

@@ -4,13 +4,13 @@ var speed = 3.0
 var gravity = 2.0
 var velocity: Vector3
 
-var spin_speed = 0.2
+var spin_max_speed = 0.2
 var lean_speed = 2.0
-var fall_angle = PI/4
+var fall_angle = PI/2.4
 
 var prev_pos: Vector3
 var lean_angle: float
-var spin_angle: float
+var spin_speed: float
 
 func _ready():
 	prev_pos = global_transform.origin
@@ -37,19 +37,17 @@ func _process(delta):
 	var dir = lean_dir()
 	if dir != 0:
 		lean_angle += dir * lean_speed * delta
+		
+		var weight = min(abs(lean_angle) / fall_angle, 1.0)
+		spin_speed = lerp(0.0, spin_max_speed, weight)
+		Util.music_speed_scale = lerp(1.0, 2.0, spin_speed / spin_max_speed)
 	
 	$Body.rotation = Vector3.ZERO
 	$Body.rotate_object_local($Body.transform.basis.z, lean_angle)
 	
 	# Apply spin
-	var spin_threshold = fall_angle * 0.5
-	if abs(lean_angle) > spin_threshold:
-		var weight = (abs(lean_angle) - spin_threshold) /  (fall_angle - spin_threshold)
-		spin_angle += lerp(0.0, spin_speed, min(weight, 1.0))
-		$Body/DancePivot.rotation = Vector3.ZERO
-		$Body/DancePivot.rotate_object_local($Body/DancePivot.transform.basis.y, spin_angle)
-	else:
-		spin_angle = 0.0
+	#TODO: wire up the spin speed to music speed
+	$Body/DancePivot.rotate_object_local($Body/DancePivot.transform.basis.y, sign(lean_angle) * spin_speed)
 	
 	if abs(lean_angle) > fall_angle:
 		print("YOU LOSE")
