@@ -46,8 +46,11 @@ func _process(delta):
 	$Body.rotate_object_local($Body.transform.basis.z, lean_angle)
 	
 	# Apply spin
-	#TODO: wire up the spin speed to music speed
 	$Body/DancePivot.rotate_object_local($Body/DancePivot.transform.basis.y, sign(lean_angle) * spin_speed)
+	
+	# Displacement
+	var offset = lean_angle / fall_angle
+	global_transform.origin += lerp(Vector3.ZERO, -global_transform.basis.x*0.4, offset)
 	
 	if abs(lean_angle) > fall_angle:
 		print("YOU LOSE")
