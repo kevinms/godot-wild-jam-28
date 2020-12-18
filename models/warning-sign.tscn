@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://models/warning-sign.dae" type="PackedScene" id=1]
+
+[sub_resource type="SpatialMaterial" id=1]
+albedo_color = Color( 0.788235, 0.0196078, 0.00392157, 1 )
+emission_enabled = true
+emission = Color( 0.921569, 0.180392, 0.180392, 1 )
+emission_energy = 1.0
+emission_operator = 0
+emission_on_uv2 = false
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0, 0, 0, 1 )
+metallic = 0.43
+emission_enabled = true
+emission = Color( 0.231373, 0.627451, 0.294118, 1 )
+emission_energy = 1.0
+emission_operator = 0
+emission_on_uv2 = false
+clearcoat_enabled = true
+clearcoat = 1.0
+clearcoat_gloss = 0.5
+
+[sub_resource type="Animation" id=3]
+resource_name = "Bounce"
+length = 0.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.098, 0.245, 0.392 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 1, 1, 1 ), Vector3( 1, 1.3279, 1 ), Vector3( 1, 0.93894, 1 ), Vector3( 1, 1.04633, 1 ) ]
+}
+
+[node name="warning-sign" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1.27324, 0, 0, 0, 1, 0, 0, 0 )
+
+[node name="Cube001" parent="." index="0"]
+transform = Transform( 0.150122, 0, 0, 0, 0.146468, 0, 0, 0, 0.150122, 0, 0, 0 )
+material/0 = SubResource( 1 )
+
+[node name="Cube" parent="." index="1"]
+transform = Transform( 0.150122, 0, 0, 0, 0.146468, 0, 0, 0, 0.150122, 0, 0, 0 )
+material_override = SubResource( 2 )
+
+[node name="Bounce" type="AnimationPlayer" parent="." index="3"]
+autoplay = "Bounce"
+anims/Bounce = SubResource( 3 )

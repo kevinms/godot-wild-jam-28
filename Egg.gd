@@ -1,4 +1,4 @@
-extends KinematicBody
+extends Spatial
 
 var speed = 3.0
 var gravity = 2.0
@@ -12,6 +12,15 @@ var prev_pos: Vector3
 var lean_angle: float
 var spin_speed: float
 
+var disable_egg: bool
+
+var curve: Curve3D
+var t: float
+
+func set_curve(new_curve, new_t):
+	curve = new_curve
+	t = new_t
+
 func _ready():
 	prev_pos = global_transform.origin
 
@@ -22,8 +31,59 @@ func lean_dir() -> float:
 		return -1.0
 	return 0.0
 
-func _process(delta):
+func path_surface_normal() -> Vector3:
+	return curve.interpolate_baked_up_vector(t * curve.get_baked_length(), true)
+
+func calc_path_curvature() -> float:
+	var offset = 1.0
+	
+	var spot = t * curve.get_baked_length()
+	
+	# Current forward vector
+	var forward: Vector3= -global_transform.basis.z.normalized()
+	var plane = Plane(-global_transform.basis.x, global_transform.basis.x, global_transform.basis.z)
+	
+	# Next forward vector
+	var p1 = curve.interpolate_baked(spot, false)
+	var p2 = curve.interpolate_baked(spot+offset, false)
+	var v1 = p2 - p1;
+	
+	v1 = plane.project(v1)
+	
+	DebugDraw.global_sphere($Debug, global_transform.origin + forward, Color.red, 0.2)
+	DebugDraw.global_sphere($Debug, global_transform.origin + v1, Color.blue, 0.2)
+	
+	var angle = forward.angle_to(v1)
+	
+	# Determine if curve is bending left or right
+	# Angle between the basis.x and v1
+	if global_transform.basis.x.angle_to(v1) < PI/2:
+		angle *= -1.0
+	
+	return angle
+
+func fall_simulation():
+	$DancePivot.rotate_object_local($DancePivot.transform.basis.y, sign(lean_angle) * spin_speed)
+	
+	#velocity = Vector3.RIGHT * speed
+	#velocity += -surface_normal * gravity
+	#var collision = move_and_collide(velocity * delta)
+	#if collision:
+	#	velocity = velocity.slide(collision.normal)
+
+func _physics_process(delta):
 	DebugDraw.reset($Debug)
+	
+	if disable_egg:
+		return
+	
+	#TODO: apply lean to egg based on curvature of level
+	#TODO: apply lean to egg based on randomness
+	
+	# Position on path
+	t += (delta * 0.1)
+	var position = curve.interpolate_baked(t * curve.get_baked_length(), false)
+	global_transform.origin = position
 	
 	# Orient the egg to be sitting on the wall and looking forward at all times
 	var target = global_transform.origin + (global_transform.origin - prev_pos).normalized()
@@ -33,40 +93,53 @@ func _process(delta):
 	look_at(target, surface_normal)
 	prev_pos = global_transform.origin
 	
-	# Apply lean
+	# Calculate lean
+	var path_curvature = calc_path_curvature()
+	#print("path curvature: ", path_curvature)
+	
+	# Directly set lean based on path curvature
+	# The user must hold left or right to stay on the wall
+	#lean_angle += path_curvature * 10.0 * delta
+	lean_angle = -path_curvature * 10.0
+	lean_angle = clamp(lean_angle, -fall_angle, fall_angle)
+	
+	if abs(lean_angle) >= fall_angle*.9:
+		$WarningSign.visible = true
+	else:
+		$WarningSign.visible = false
+	
 	var dir = lean_dir()
 	if dir != 0:
 		lean_angle += dir * lean_speed * delta
-		
-		var weight = min(abs(lean_angle) / fall_angle, 1.0)
-		spin_speed = lerp(0.0, spin_max_speed, weight)
-		Util.music_speed_scale = lerp(1.0, 2.0, spin_speed / spin_max_speed)
+		print("lean: ", lean_angle)
 	
-	$Body.rotation = Vector3.ZERO
-	$Body.rotate_object_local($Body.transform.basis.z, lean_angle)
-	
-	# Apply spin
-	$Body/DancePivot.rotate_object_local($Body/DancePivot.transform.basis.y, sign(lean_angle) * spin_speed)
+	var weight = min(abs(lean_angle) / fall_angle, 1.0)
+	spin_speed = lerp(0.0, spin_max_speed, weight)
+	Util.music_speed_scale = lerp(1.0, 2.0, spin_speed / spin_max_speed)
 	
 	# Displacement
 	var offset = lean_angle / fall_angle
 	global_transform.origin += lerp(Vector3.ZERO, -global_transform.basis.x*0.4, offset)
 	
-	if abs(lean_angle) > fall_angle:
-		print("YOU LOSE")
+	# Lean
+	rotate(global_transform.basis.z.normalized(), lean_angle)
 	
-	#velocity = Vector3.RIGHT * speed
-	#velocity += -surface_normal * gravity
-	#var collision = move_and_collide(velocity * delta)
-	#if collision:
-	#	velocity = velocity.slide(collision.normal)
+	# Apply spin
+	$DancePivot.rotate_object_local($DancePivot.transform.basis.y, sign(lean_angle) * spin_speed)
+	
+	if abs(lean_angle)+0.00001 >= fall_angle:
+		print("Starting")
+		if $FallTimer.is_stopped():
+			$FallTimer.start()
+	else:
+		$FallTimer.stop()
 
 # Get the surface normal of w/e is beneath us. This is used as the up vector for move_and_slide() to prevent the extra sliding!
 func get_floor_normal():
 	var from = global_transform.origin + global_transform.basis.y.normalized()
 	var to = global_transform.origin + (-global_transform.basis.y.normalized() * 5)
 	
-	DebugDraw.global_line($Debug, from, to)
+	#DebugDraw.global_line($Debug, from, to)
 	
 	var space_state = get_world().direct_space_state
 	var result = space_state.intersect_ray(from, to, [self])
@@ -75,3 +148,10 @@ func get_floor_normal():
 		#print("beneath me: ", result.normal)
 		return result.normal
 	return global_transform.basis.y.normalized()
+
+
+func _on_FallTimer_timeout():
+	print("YOU LOSE")
+	#disable_egg = true
+	
+	# Apply impulse
