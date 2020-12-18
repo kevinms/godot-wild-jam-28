@@ -64,21 +64,13 @@ func calc_path_curvature() -> float:
 
 func fall_simulation():
 	$DancePivot.rotate_object_local($DancePivot.transform.basis.y, sign(lean_angle) * spin_speed)
-	
-	#velocity = Vector3.RIGHT * speed
-	#velocity += -surface_normal * gravity
-	#var collision = move_and_collide(velocity * delta)
-	#if collision:
-	#	velocity = velocity.slide(collision.normal)
 
 func _physics_process(delta):
 	DebugDraw.reset($Debug)
 	
 	if disable_egg:
+		fall_simulation()
 		return
-	
-	#TODO: apply lean to egg based on curvature of level
-	#TODO: apply lean to egg based on randomness
 	
 	# Position on path
 	t += (delta * 0.1)
@@ -110,11 +102,6 @@ func _physics_process(delta):
 		$WarningSign.visible = true
 	else:
 		$WarningSign.visible = false
-	
-	#var input_dir = lean_dir()
-	#if input_dir != 0:
-		#lean_angle += dir * lean_speed * delta
-		#print("lean: ", lean_angle)
 	
 	var weight = min(abs(lean_angle) / fall_angle, 1.0)
 	spin_speed = lerp(0.0, spin_max_speed, weight)
