@@ -15,6 +15,7 @@ func create_dot(pos, scale, color):
 	add_child(dot)
 
 func _ready():
+	Global.game_over = false
 	curve = Util.CurveFromCsvFile("res://levels/curvature-test.csv")
 	
 	for i in curve.get_point_count():
@@ -25,6 +26,13 @@ func _ready():
 	$Egg.set_curve(curve, 0.0)
 
 func _process(delta):
+	if Global.game_over:
+		$GameOverOverlay.visible = true
+		print("GAME OVER")
+
+	if Input.is_action_just_pressed("ui_accept"):
+		get_tree().reload_current_scene()
+	
 	#var position = curve.interpolate_baked($Egg.t * curve.get_baked_length(), false)
 	
 	var up = $Egg.path_surface_normal()

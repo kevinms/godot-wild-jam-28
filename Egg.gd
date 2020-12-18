@@ -131,7 +131,6 @@ func _physics_process(delta):
 	$DancePivot.rotate_object_local($DancePivot.transform.basis.y, sign(lean_angle) * spin_speed)
 	
 	if abs(lean_angle)+0.00001 >= fall_angle and !user_compensation():
-		print("Starting")
 		if $FallTimer.is_stopped():
 			$FallTimer.start()
 	else:
@@ -169,3 +168,9 @@ func _on_FallTimer_timeout():
 	# Apply impulse
 	print(velocity)
 	apply_central_impulse(velocity)
+	
+	$DeathTimer.start()
+
+
+func _on_DeathTimer_timeout():
+	Global.game_over = true

@@ -127,6 +127,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.00047, 0 )
 wait_time = 0.2
 one_shot = true
 
+[node name="DeathTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Bounce = SubResource( 10 )
 [connection signal="timeout" from="FallTimer" to="." method="_on_FallTimer_timeout"]
+[connection signal="timeout" from="DeathTimer" to="." method="_on_DeathTimer_timeout"]
