@@ -1,4 +1,4 @@
-extends Spatial
+extends RigidBody
 
 var speed = 3.0
 var gravity = 2.0
@@ -91,6 +91,9 @@ func _physics_process(delta):
 		target = global_transform.origin - global_transform.basis.z.normalized()
 	var surface_normal = get_floor_normal()
 	look_at(target, surface_normal)
+	
+	# Calc velocity
+	velocity = (1.0/delta) * (global_transform.origin - prev_pos)
 	prev_pos = global_transform.origin
 	
 	# Calculate lean
@@ -108,10 +111,10 @@ func _physics_process(delta):
 	else:
 		$WarningSign.visible = false
 	
-	var dir = lean_dir()
-	if dir != 0:
-		lean_angle += dir * lean_speed * delta
-		print("lean: ", lean_angle)
+	#var input_dir = lean_dir()
+	#if input_dir != 0:
+		#lean_angle += dir * lean_speed * delta
+		#print("lean: ", lean_angle)
 	
 	var weight = min(abs(lean_angle) / fall_angle, 1.0)
 	spin_speed = lerp(0.0, spin_max_speed, weight)
@@ -127,12 +130,21 @@ func _physics_process(delta):
 	# Apply spin
 	$DancePivot.rotate_object_local($DancePivot.transform.basis.y, sign(lean_angle) * spin_speed)
 	
-	if abs(lean_angle)+0.00001 >= fall_angle:
+	if abs(lean_angle)+0.00001 >= fall_angle and !user_compensation():
 		print("Starting")
 		if $FallTimer.is_stopped():
 			$FallTimer.start()
 	else:
 		$FallTimer.stop()
+
+func user_compensation() -> bool:
+	var input_dir = lean_dir()
+	
+	if input_dir < 0.0 and -lean_angle < 0.0:
+		return true
+	if input_dir > 0.0 and -lean_angle > 0.0:
+		return true
+	return false
 
 # Get the surface normal of w/e is beneath us. This is used as the up vector for move_and_slide() to prevent the extra sliding!
 func get_floor_normal():
@@ -152,6 +164,8 @@ func get_floor_normal():
 
 func _on_FallTimer_timeout():
 	print("YOU LOSE")
-	#disable_egg = true
+	disable_egg = true
 	
 	# Apply impulse
+	print(velocity)
+	apply_central_impulse(velocity)
