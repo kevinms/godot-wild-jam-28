@@ -4,8 +4,45 @@ onready var streams = [$Layer1, $Layer2, $Layer3, $Layer4, $Layer5]
 
 var next_toggle: float
 
+onready var test_track = [
+	"res://music/test track/Track_1.ogg",
+	"res://music/test track/Track_2.ogg",
+	"res://music/test track/Track_3.ogg",
+	"res://music/test track/Track_4.ogg",
+	"res://music/test track/Track_5.ogg"
+]
+
+onready var sitting_pro = [
+	"res://music/sitting pro/Track_1.ogg",
+	"res://music/sitting pro/Track_2.ogg",
+	"res://music/sitting pro/Track_3.ogg",
+	"res://music/sitting pro/Track_4.ogg",
+	"res://music/sitting pro/Track_5.ogg"
+]
+
+onready var this_egg_moves = [
+	"res://music/this egg moves/Track_1.ogg",
+	"res://music/this egg moves/Track_2.ogg",
+	"res://music/this egg moves/Track_3.ogg",
+	"res://music/this egg moves/Track_4.ogg",
+	"res://music/this egg moves/Track_5.ogg"
+]
+
+onready var ost = [test_track, sitting_pro, this_egg_moves]
+
 func _ready():
 	randomize()
+	
+	var track = ost[rand_range(0, len(ost))]
+	
+	for i in range(len(track)):
+		print("resource: ", track[i])
+		var audio_stream = load(track[i])
+		
+		print("loaded: ", audio_stream)
+		streams[i].stream = audio_stream
+		streams[i].play()
+		streams[i].volume_db = -80.0
 	
 	var stream: AudioStreamPlayer = streams[rand_range(0, len(streams))]
 	stream.volume_db = 0.0
