@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Track_3.ogg-fb86ffdbade3aed861676dad350a3a1e.oggstr"
+
+[deps]
+
+source_file="res://music/sitting pro/Track_3.ogg"
+dest_files=[ "res://.import/Track_3.ogg-fb86ffdbade3aed861676dad350a3a1e.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

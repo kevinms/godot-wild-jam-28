@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Track_2.ogg-6e07fd1bb73d336b237c67625a5f706f.oggstr"
+
+[deps]
+
+source_file="res://music/this egg moves/Track_2.ogg"
+dest_files=[ "res://.import/Track_2.ogg-6e07fd1bb73d336b237c67625a5f706f.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
