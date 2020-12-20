@@ -12,6 +12,9 @@ var prev_pos: Vector3
 var lean_angle: float
 var spin_speed: float
 
+var path_speed: float = 10.0
+var path_speed_scale: float = 1.0
+
 var user_lean_angle: float
 
 var disable_egg: bool
@@ -34,12 +37,12 @@ func lean_dir() -> float:
 	return 0.0
 
 func path_surface_normal() -> Vector3:
-	return curve.interpolate_baked_up_vector(t * curve.get_baked_length(), true)
+	return curve.interpolate_baked_up_vector(t, true)
 
 func calc_path_curvature() -> float:
 	var offset = 1.0
 	
-	var spot = t * curve.get_baked_length()
+	var spot = t
 	
 	# Current forward vector
 	var forward: Vector3= -global_transform.basis.z.normalized()
@@ -74,9 +77,13 @@ func _physics_process(delta):
 		fall_simulation()
 		return
 	
+	var speed = path_speed * path_speed_scale
+	if $FallTimer.is_stopped():
+		$FallTimer.wait_time = 0.2 * path_speed_scale
+	
 	# Position on path
-	t += (delta * 0.1)
-	var position = curve.interpolate_baked(t * curve.get_baked_length(), false)
+	t += min((delta * speed), curve.get_baked_length())
+	var position = curve.interpolate_baked(t, false)
 	global_transform.origin = position
 	
 	# Orient the egg to be sitting on the wall and looking forward at all times
@@ -84,7 +91,7 @@ func _physics_process(delta):
 	if global_transform.origin == prev_pos:
 		target = global_transform.origin - global_transform.basis.z.normalized()
 	#var surface_normal = get_floor_normal()
-	var surface_normal = curve.interpolate_baked_up_vector(t * curve.get_baked_length(), false)
+	var surface_normal = curve.interpolate_baked_up_vector(t, false)
 	look_at(target, surface_normal)
 	
 	# Calc velocity
@@ -147,7 +154,10 @@ func apply_user_lean(delta):
 	elif input_dir > 0:
 		user_lean_angle += delta * user_speed
 	else:
-		user_lean_angle += sign(user_lean_angle) * (delta * user_speed)
+		if user_lean_angle < 3.0:
+			user_lean_angle = 0
+		else:
+			user_lean_angle -= sign(user_lean_angle) * (delta * user_speed)
 	
 	#var max_user_lean = fall_angle
 	var max_user_lean = fall_angle * 0.3
