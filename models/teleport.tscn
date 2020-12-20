@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://models/teleport.dae" type="PackedScene" id=1]
+[ext_resource path="res://models/teleport.gd" type="Script" id=2]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type spatial;
@@ -54,6 +55,7 @@ shader_param/impact_site = null
 extents = Vector3( 6.92908, 2.14009, 6.9407 )
 
 [node name="teleport" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
 
 [node name="discombobulated_mesh" parent="." index="0"]
 material/0 = SubResource( 2 )
@@ -64,7 +66,9 @@ visible = false
 [node name="Effect" type="AnimationPlayer" parent="." index="3"]
 
 [node name="Area" type="Area" parent="." index="4"]
+transform = Transform( 1, 0, 0, 0, 1.5011, 0, 0, 0, 1, 0, 3.78608, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Area" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.56492, 0 )
 shape = SubResource( 3 )
+[connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]

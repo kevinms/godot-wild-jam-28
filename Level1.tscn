@@ -8,7 +8,7 @@
 [ext_resource path="res://levels/kiara_1_dawn_2k.hdr" type="Texture" id=9]
 [ext_resource path="res://Menu.gd" type="Script" id=10]
 
-[sub_resource type="GDScript" id=4]
+[sub_resource type="GDScript" id=1]
 script/source = "extends Spatial
 
 var curve: Curve3D
@@ -35,6 +35,8 @@ func _ready():
 		#create_dot(curve.get_point_out(i), 0.2, Color(0,1,0))
 	
 	$Egg.set_curve(curve, 0.0)
+	
+	$teleport.next_level = \"res://Level2.tscn\"
 
 func _process(delta):
 	if Global.game_over:
@@ -52,16 +54,16 @@ func _process(delta):
 	$Camera.look_at_from_position(position, target, up)
 "
 
-[sub_resource type="PanoramaSky" id=1]
+[sub_resource type="PanoramaSky" id=2]
 panorama = ExtResource( 9 )
 
-[sub_resource type="Environment" id=2]
+[sub_resource type="Environment" id=3]
 background_mode = 2
-background_sky = SubResource( 1 )
+background_sky = SubResource( 2 )
 background_color = Color( 0.0705882, 0.0627451, 0.0627451, 1 )
 
 [node name="Level1" type="Spatial"]
-script = SubResource( 4 )
+script = SubResource( 1 )
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( -0.00125687, 0.322051, -0.946721, 6.18832e-08, 0.946722, 0.322051, 0.999999, 0.000404719, -0.00118993, -5.88014, 3.83139, 0.0120226 )
@@ -100,7 +102,7 @@ __meta__ = {
 }
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 2 )
+environment = SubResource( 3 )
 
 [node name="Menu" type="Spatial" parent="."]
 pause_mode = 2
