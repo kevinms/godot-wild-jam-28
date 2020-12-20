@@ -86,6 +86,10 @@ func _physics_process(delta):
 	var position = curve.interpolate_baked(t, true)
 	global_transform.origin = position
 	
+	# Music speed increases as you progress on the path
+	#Util.music_speed_scale = lerp(1.0, 1.5, spin_speed / spin_max_speed)
+	Util.music_speed_scale = lerp(1.0, 1.5, t / curve.get_baked_length())
+	
 	# Orient the egg to be sitting on the wall and looking forward at all times
 	var target = global_transform.origin + (global_transform.origin - prev_pos).normalized()
 	if global_transform.origin == prev_pos:
@@ -127,7 +131,7 @@ func _physics_process(delta):
 	
 	var weight = min(abs(lean_angle) / fall_angle, 1.0)
 	spin_speed = lerp(0.0, spin_max_speed, weight)
-	Util.music_speed_scale = lerp(1.0, 2.0, spin_speed / spin_max_speed)
+	#Util.music_speed_scale = lerp(1.0, 1.5, spin_speed / spin_max_speed)
 	
 	# Displacement
 	var offset = lean_angle / fall_angle

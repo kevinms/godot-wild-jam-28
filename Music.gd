@@ -26,5 +26,5 @@ func _process(delta):
 		else:
 			stream.volume_db = -80.0
 		
-		next_toggle = rand_range(1.0, 5.0)
-		#next_toggle = rand_range(24.0, 24.0*4)
+		#next_toggle = rand_range(1.0, 5.0)
+		next_toggle = rand_range(5.0, 10.0)
