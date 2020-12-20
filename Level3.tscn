@@ -31,7 +31,7 @@ func _ready():
 	Global.game_over = false
 	curve = Util.CurveFromCsvFile(\"res://levels/level3.txt\")
 	$teleport.next_level = \"res://Level4.tscn\"
-	$Egg.path_speed_scale = 2.0
+	$Egg.path_speed_scale = 1.1
 	
 	for i in curve.get_point_count():
 		create_dot(curve.get_point_position(i), 0.4, Color.white.linear_interpolate(Color(0,0,1), float(i) / curve.get_point_count()))
