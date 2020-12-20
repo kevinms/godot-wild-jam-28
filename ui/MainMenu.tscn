@@ -7,10 +7,10 @@
 script = ExtResource( 2 )
 
 [node name="TextureRect" type="TextureRect" parent="."]
-margin_left = 170.113
-margin_top = -7.37857
-margin_right = 878.113
-margin_bottom = 523.621
+margin_left = 156.097
+margin_top = 31.9991
+margin_right = 864.097
+margin_bottom = 562.999
 texture = ExtResource( 1 )
 expand = true
 __meta__ = {
@@ -18,66 +18,67 @@ __meta__ = {
 }
 
 [node name="Level1" type="Button" parent="."]
-margin_left = 240.788
-margin_top = 203.637
-margin_right = 365.788
-margin_bottom = 246.637
+margin_left = 363.593
+margin_top = 209.644
+margin_right = 488.593
+margin_bottom = 252.644
 text = "Level 1"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Level2" type="Button" parent="."]
-margin_left = 240.788
-margin_top = 262.437
-margin_right = 365.788
-margin_bottom = 305.437
+margin_left = 363.593
+margin_top = 268.444
+margin_right = 488.593
+margin_bottom = 311.444
 text = "Level 2"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Level3" type="Button" parent="."]
-margin_left = 242.123
-margin_top = 323.172
-margin_right = 367.123
-margin_bottom = 366.172
+margin_left = 364.928
+margin_top = 329.179
+margin_right = 489.928
+margin_bottom = 372.179
 text = "Level 3"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Level4" type="Button" parent="."]
-margin_left = 440.346
-margin_top = 204.304
-margin_right = 565.346
-margin_bottom = 247.304
+margin_left = 563.151
+margin_top = 210.311
+margin_right = 688.151
+margin_bottom = 253.311
 text = "Level 4"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Level5" type="Button" parent="."]
-margin_left = 440.346
-margin_top = 263.104
-margin_right = 565.346
-margin_bottom = 306.104
+margin_left = 563.151
+margin_top = 269.111
+margin_right = 688.151
+margin_bottom = 312.111
 text = "Level 5"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Level6" type="Button" parent="."]
-margin_left = 441.681
-margin_top = 323.84
-margin_right = 566.681
-margin_bottom = 366.84
+margin_left = 564.486
+margin_top = 329.846
+margin_right = 689.486
+margin_bottom = 372.846
 text = "Level 6"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Level7" type="Button" parent="."]
+visible = false
 margin_left = 643.909
 margin_top = 202.302
 margin_right = 768.909
@@ -88,6 +89,7 @@ __meta__ = {
 }
 
 [node name="Level8" type="Button" parent="."]
+visible = false
 margin_left = 643.909
 margin_top = 261.102
 margin_right = 768.909
@@ -98,6 +100,7 @@ __meta__ = {
 }
 
 [node name="Level9" type="Button" parent="."]
+visible = false
 margin_left = 645.244
 margin_top = 321.837
 margin_right = 770.244
