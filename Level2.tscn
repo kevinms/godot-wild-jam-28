@@ -1,0 +1,128 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Music.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Egg.tscn" type="PackedScene" id=2]
+[ext_resource path="res://ui/balance_meter_bg.png" type="Texture" id=4]
+[ext_resource path="res://ui/balance_meter_fg.png" type="Texture" id=6]
+[ext_resource path="res://levels/curvature-test.tscn" type="PackedScene" id=7]
+[ext_resource path="res://ui/game-over.png" type="Texture" id=8]
+[ext_resource path="res://levels/kiara_1_dawn_2k.hdr" type="Texture" id=9]
+[ext_resource path="res://Menu.gd" type="Script" id=10]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Spatial
+
+var curve: Curve3D
+
+func create_dot(pos, scale, color):
+	var dot = MeshInstance.new()
+	dot.mesh = SphereMesh.new()
+	dot.global_transform.origin = pos
+	dot.scale = Vector3.ONE * scale
+	
+	var mat = SpatialMaterial.new()
+	mat.albedo_color = color
+	dot.set_surface_material(0, mat)
+	
+	add_child(dot)
+
+func _ready():
+	Global.game_over = false
+	curve = Util.CurveFromCsvFile(\"res://levels/curvature-test.csv\")
+	
+	for i in curve.get_point_count():
+		create_dot(curve.get_point_position(i), 0.4, Color.white.linear_interpolate(Color(0,0,1), float(i) / curve.get_point_count()))
+		#create_dot(curve.get_point_in(i), 0.2, Color(1,0,0))
+		#create_dot(curve.get_point_out(i), 0.2, Color(0,1,0))
+	
+	$Egg.set_curve(curve, 0.0)
+
+func _process(delta):
+	if Global.game_over:
+		$GameOverOverlay.visible = true
+		print(\"GAME OVER\")
+
+	if Input.is_action_just_pressed(\"ui_accept\"):
+		get_tree().reload_current_scene()
+	
+	#var position = curve.interpolate_baked($Egg.t * curve.get_baked_length(), false)
+	
+	var up = $Egg.path_surface_normal()
+	var target = $Egg.global_transform.origin + (up * 2.0)
+	var position = $Egg.global_transform.origin + (up * 3.0) + ($Egg.global_transform.basis.z * 5.0)
+	$Camera.look_at_from_position(position, target, up)
+"
+
+[sub_resource type="PanoramaSky" id=2]
+panorama = ExtResource( 9 )
+
+[sub_resource type="Environment" id=3]
+background_mode = 2
+background_sky = SubResource( 2 )
+background_color = Color( 0.0705882, 0.0627451, 0.0627451, 1 )
+
+[node name="World" type="Spatial"]
+script = SubResource( 1 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( -0.00125687, 0.322051, -0.946721, 6.18832e-08, 0.946722, 0.322051, 0.999999, 0.000404719, -0.00118993, -5.88014, 3.83139, 0.0120226 )
+current = true
+
+[node name="Egg" parent="." instance=ExtResource( 2 )]
+transform = Transform( -4.37114e-08, -4.37114e-08, -1, 4.37114e-08, 1, -4.37114e-08, 1, -4.37114e-08, -4.37114e-08, -1.49057, 0.787236, 0.0191122 )
+
+[node name="Target" type="Position3D" parent="Egg"]
+transform = Transform( 1, 0, 0, 0, 1, -1.64203e-15, 0, -1.64203e-15, 1, 0, 1.10685, -1.19209e-07 )
+
+[node name="HUD" type="Position2D" parent="."]
+visible = false
+
+[node name="BalanceMeter" type="Node2D" parent="HUD"]
+
+[node name="TextureProgress" type="TextureProgress" parent="HUD/BalanceMeter"]
+margin_left = 408.0
+margin_top = 509.0
+margin_right = 448.0
+margin_bottom = 549.0
+rect_scale = Vector2( 3.40896, 3.40896 )
+value = 70.0
+texture_under = ExtResource( 4 )
+texture_progress = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Music" parent="." instance=ExtResource( 1 )]
+
+[node name="GameOverOverlay" type="Position2D" parent="."]
+visible = false
+
+[node name="Label" type="Label" parent="GameOverOverlay"]
+margin_left = 421.913
+margin_top = 476.658
+margin_right = 557.913
+margin_bottom = 490.658
+text = "Press enter to restart"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="GameOverOverlay"]
+margin_left = 151.321
+margin_top = 183.75
+margin_right = 837.321
+margin_bottom = 355.75
+texture = ExtResource( 8 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 3 )
+
+[node name="curvature-test" parent="." instance=ExtResource( 7 )]
+
+[node name="Menu" type="Spatial" parent="."]
+pause_mode = 2
+script = ExtResource( 10 )

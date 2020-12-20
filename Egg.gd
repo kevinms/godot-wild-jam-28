@@ -12,6 +12,8 @@ var prev_pos: Vector3
 var lean_angle: float
 var spin_speed: float
 
+var user_lean_angle: float
+
 var disable_egg: bool
 
 var curve: Curve3D
@@ -81,7 +83,8 @@ func _physics_process(delta):
 	var target = global_transform.origin + (global_transform.origin - prev_pos).normalized()
 	if global_transform.origin == prev_pos:
 		target = global_transform.origin - global_transform.basis.z.normalized()
-	var surface_normal = get_floor_normal()
+	#var surface_normal = get_floor_normal()
+	var surface_normal = curve.interpolate_baked_up_vector(t * curve.get_baked_length(), false)
 	look_at(target, surface_normal)
 	
 	# Calc velocity
@@ -103,6 +106,18 @@ func _physics_process(delta):
 	else:
 		$WarningSign.visible = false
 	
+	#TODO: adjust fall timer inverse to the path speed
+	
+#	var input_dir = lean_dir()
+#	if input_dir < 0:
+#		lean_angle -= fall_angle * 0.3
+#	elif input_dir > 0:
+#		lean_angle += fall_angle * 0.3
+	
+	apply_user_lean(delta)
+	
+	lean_angle = clamp(lean_angle, -fall_angle, fall_angle)
+	
 	var weight = min(abs(lean_angle) / fall_angle, 1.0)
 	spin_speed = lerp(0.0, spin_max_speed, weight)
 	Util.music_speed_scale = lerp(1.0, 2.0, spin_speed / spin_max_speed)
@@ -122,6 +137,24 @@ func _physics_process(delta):
 			$FallTimer.start()
 	else:
 		$FallTimer.stop()
+
+func apply_user_lean(delta):
+	var user_speed = 3.0
+	
+	var input_dir = lean_dir()
+	if input_dir < 0:
+		user_lean_angle -= delta * user_speed
+	elif input_dir > 0:
+		user_lean_angle += delta * user_speed
+	else:
+		user_lean_angle += sign(user_lean_angle) * (delta * user_speed)
+	
+	#var max_user_lean = fall_angle
+	var max_user_lean = fall_angle * 0.3
+	
+	user_lean_angle = clamp(user_lean_angle, -max_user_lean, max_user_lean)
+	
+	lean_angle += user_lean_angle
 
 func user_compensation() -> bool:
 	var input_dir = lean_dir()
