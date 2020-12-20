@@ -16,7 +16,7 @@ func create_dot(pos, scale, color):
 
 func _ready():
 	Global.game_over = false
-	curve = Util.CurveFromCsvFile("res://levels/curvature-test.csv")
+	curve = Util.CurveFromCsvFile("res://levels/curvature-test.txt")
 	
 	for i in curve.get_point_count():
 		create_dot(curve.get_point_position(i), 0.4, Color.white.linear_interpolate(Color(0,0,1), float(i) / curve.get_point_count()))
