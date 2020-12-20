@@ -44,7 +44,8 @@ func _ready():
 		streams[i].play()
 		streams[i].volume_db = -80.0
 	
-	var stream: AudioStreamPlayer = streams[rand_range(0, len(streams))]
+	#var stream: AudioStreamPlayer = streams[rand_range(0, len(streams))]
+	var stream: AudioStreamPlayer = streams[0]
 	stream.volume_db = 0.0
 
 func _process(delta):
@@ -56,7 +57,7 @@ func _process(delta):
 	#music_speed_scale += 0.01
 	
 	if next_toggle <= 0:
-		var stream: AudioStreamPlayer = streams[rand_range(0, len(streams))]
+		var stream: AudioStreamPlayer = streams[rand_range(1, len(streams))]
 		
 		if stream.volume_db < 0.0:
 			stream.volume_db = 0.0
