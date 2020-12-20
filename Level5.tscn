@@ -56,12 +56,12 @@ func _process(delta):
 	$Camera.look_at_from_position(position, target, up)
 "
 
-[sub_resource type="PanoramaSky" id=2]
+[sub_resource type="PanoramaSky" id=5]
 panorama = ExtResource( 9 )
 
-[sub_resource type="Environment" id=3]
+[sub_resource type="Environment" id=6]
 background_mode = 2
-background_sky = SubResource( 2 )
+background_sky = SubResource( 5 )
 background_color = Color( 0.0705882, 0.0627451, 0.0627451, 1 )
 
 [sub_resource type="ConcavePolygonShape" id=4]
@@ -125,7 +125,7 @@ __meta__ = {
 }
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 3 )
+environment = SubResource( 6 )
 
 [node name="Menu" type="Spatial" parent="."]
 pause_mode = 2
