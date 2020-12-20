@@ -13,7 +13,7 @@ def main():
     #mat = obj.matrix_world
     
     outpath = bpy.path.basename(bpy.data.filepath)
-    outpath = "//" + os.path.splitext(outpath)[0] + ".csv"
+    outpath = "//" + os.path.splitext(outpath)[0] + ".txt"
 
     with open(bpy.path.abspath(outpath), 'w') as out:
         for x in range(len(spline.bezier_points)):

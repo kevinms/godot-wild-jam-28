@@ -13,7 +13,12 @@ func tovec(x, y, z):
 
 func CurveFromCsvFile(res) -> Curve3D:
 	var file = File.new()
-	file.open(res, file.READ)
+	
+	print("Opening curve: ", res)
+	var err = file.open(res, file.READ)
+	if err != OK:
+		print("Error: ", err)
+		return null
 	
 	var curve = Curve3D.new()
 	curve.up_vector_enabled = true
@@ -33,6 +38,8 @@ func CurveFromCsvFile(res) -> Curve3D:
 		curve.add_point(co, handle_left, handle_right)
 		curve.set_point_tilt(i, tilt)
 		i += 1
+	
+	file.close()
 
 	return curve
 
