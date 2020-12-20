@@ -49,8 +49,8 @@ func calc_path_curvature() -> float:
 	var plane = Plane(-global_transform.basis.x, global_transform.basis.x, global_transform.basis.z)
 	
 	# Next forward vector
-	var p1 = curve.interpolate_baked(spot, false)
-	var p2 = curve.interpolate_baked(spot+offset, false)
+	var p1 = curve.interpolate_baked(spot, true)
+	var p2 = curve.interpolate_baked(spot+offset, true)
 	var v1 = p2 - p1;
 	
 	v1 = plane.project(v1)
@@ -79,11 +79,11 @@ func _physics_process(delta):
 	
 	var speed = path_speed * path_speed_scale
 	if $FallTimer.is_stopped():
-		$FallTimer.wait_time = 0.2 * path_speed_scale
+		$FallTimer.wait_time = 0.17 * (1.0/path_speed_scale)
 	
 	# Position on path
 	t += min((delta * speed), curve.get_baked_length())
-	var position = curve.interpolate_baked(t, false)
+	var position = curve.interpolate_baked(t, true)
 	global_transform.origin = position
 	
 	# Orient the egg to be sitting on the wall and looking forward at all times
@@ -91,7 +91,7 @@ func _physics_process(delta):
 	if global_transform.origin == prev_pos:
 		target = global_transform.origin - global_transform.basis.z.normalized()
 	#var surface_normal = get_floor_normal()
-	var surface_normal = curve.interpolate_baked_up_vector(t, false)
+	var surface_normal = curve.interpolate_baked_up_vector(t, true)
 	look_at(target, surface_normal)
 	
 	# Calc velocity

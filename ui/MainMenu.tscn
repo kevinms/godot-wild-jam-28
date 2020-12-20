@@ -18,23 +18,100 @@ __meta__ = {
 }
 
 [node name="Level1" type="Button" parent="."]
-margin_left = 445.018
-margin_top = 208.309
-margin_right = 570.018
-margin_bottom = 251.309
+margin_left = 240.788
+margin_top = 203.637
+margin_right = 365.788
+margin_bottom = 246.637
 text = "Level 1"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Level2" type="Button" parent="."]
-margin_left = 445.018
-margin_top = 267.109
-margin_right = 570.018
-margin_bottom = 310.109
+margin_left = 240.788
+margin_top = 262.437
+margin_right = 365.788
+margin_bottom = 305.437
 text = "Level 2"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level3" type="Button" parent="."]
+margin_left = 242.123
+margin_top = 323.172
+margin_right = 367.123
+margin_bottom = 366.172
+text = "Level 3"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level4" type="Button" parent="."]
+margin_left = 440.346
+margin_top = 204.304
+margin_right = 565.346
+margin_bottom = 247.304
+text = "Level 4"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level5" type="Button" parent="."]
+margin_left = 440.346
+margin_top = 263.104
+margin_right = 565.346
+margin_bottom = 306.104
+text = "Level 5"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level6" type="Button" parent="."]
+margin_left = 441.681
+margin_top = 323.84
+margin_right = 566.681
+margin_bottom = 366.84
+text = "Level 6"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level7" type="Button" parent="."]
+margin_left = 643.909
+margin_top = 202.302
+margin_right = 768.909
+margin_bottom = 245.302
+text = "Level 7"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level8" type="Button" parent="."]
+margin_left = 643.909
+margin_top = 261.102
+margin_right = 768.909
+margin_bottom = 304.102
+text = "Level 8"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level9" type="Button" parent="."]
+margin_left = 645.244
+margin_top = 321.837
+margin_right = 770.244
+margin_bottom = 364.837
+text = "Level 9"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 [connection signal="pressed" from="Level1" to="." method="_on_Level1_pressed"]
 [connection signal="pressed" from="Level2" to="." method="_on_Level2_pressed"]
+[connection signal="pressed" from="Level3" to="." method="_on_Level3_pressed"]
+[connection signal="pressed" from="Level4" to="." method="_on_Level4_pressed"]
+[connection signal="pressed" from="Level5" to="." method="_on_Level5_pressed"]
+[connection signal="pressed" from="Level6" to="." method="_on_Level6_pressed"]
+[connection signal="pressed" from="Level7" to="." method="_on_Level7_pressed"]
+[connection signal="pressed" from="Level8" to="." method="_on_Level8_pressed"]
+[connection signal="pressed" from="Level9" to="." method="_on_Level9_pressed"]

@@ -30,6 +30,7 @@ func create_dot(pos, scale, color):
 func _ready():
 	Global.game_over = false
 	curve = Util.CurveFromCsvFile(\"res://levels/curvature-test.txt\")
+	$teleport.next_level = \"res://Level3.tscn\"
 	
 	for i in curve.get_point_count():
 		create_dot(curve.get_point_position(i), 0.4, Color.white.linear_interpolate(Color(0,0,1), float(i) / curve.get_point_count()))
@@ -37,8 +38,6 @@ func _ready():
 		#create_dot(curve.get_point_out(i), 0.2, Color(0,1,0))
 	
 	$Egg.set_curve(curve, 0.0)
-	
-	$teleport.next_level = \"res://ui/MainMenu.tscn\"
 
 func _process(delta):
 	if Global.game_over:
